@@ -7,8 +7,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -17,67 +17,33 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Button button = (Button) findViewById(R.id.button);
-        Button button2 = (Button) findViewById(R.id.button2);
+        /// Конструируем диалоговое окно
+        AlertDialog.Builder alert = new AlertDialog.Builder(MainActivity.this);
 
-        button2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                AlertDialog.Builder a_builder = new AlertDialog.Builder(MainActivity.this);
-                a_builder.setTitle("Выберите один из вариантов");
-                a_builder.setMessage("Ваше име - ")
-                        .setCancelable(false)
-                        .setPositiveButton("Да", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int whichButton) {
-                                finish();
-                            }
-                        })
-                        .setNegativeButton("Нет", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int whichButton) {
-                                dialogInterface.cancel();
-                            }
-                        });
+        // Заголовок и текст диалогового окна
+        alert.setTitle("Информация о пользователе");
+        alert.setMessage("Введите ваше име");
 
-                a_builder.show();
+        // Устанавливаем EditText для ввода текста
+        final EditText input = new EditText(MainActivity.this);
+        alert.setView(input);
+
+        // Создаем кнопку "Подтвердить"
+        alert.setPositiveButton("Подтвердить", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+                // Переход во второе активити с передачей имени
+                Intent intent = new Intent(MainActivity.this, Activity2.class);
+                intent.putExtra("name", input.getText().toString());
+                startActivity(intent);
+                Toast.makeText(MainActivity.this, "Вы перешли во второе активити",
+                        Toast.LENGTH_LONG).show();
             }
         });
 
-        // Обрабатываем нажатие на кнопку
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                // Создаем диалоговое окно
-                AlertDialog.Builder alert = new AlertDialog.Builder(MainActivity.this);
+        alert.setCancelable(false); // Запрещаем закрытие диалогового окна
 
-                // Заголовок и текст активити
-                alert.setTitle("Информация о пользователе");
-                alert.setMessage("Введите ваше име");
-
-                // Устанавливаем EditText для ввода текста
-                final EditText input = new EditText(MainActivity.this);
-                alert.setView(input);
-
-                // Создаем кнопку "Подтвердить"
-                alert.setPositiveButton("Подтвердить", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int whichButton) {
-                        String value = input.getText().toString();
-
-                        // Do something with value!
-
-                        // Переход во второе активити
-                        Intent intent = new Intent(MainActivity.this, Activity2.class);
-                        startActivity(intent);
-
-
-                    }
-                });
-
-                // Показываем диалоговое окно
-                alert.show();
-            }
-        });
+        // Показываем диалоговое окно
+        alert.show();
 
     }
 }
