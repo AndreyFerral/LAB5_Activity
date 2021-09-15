@@ -42,17 +42,22 @@ public class MainActivity extends AppCompatActivity {
         // Создаем кнопку "Подтвердить"
         alert.setPositiveButton("Подтвердить", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
+
                 // Переход во второе активити с передачей имени
                 Intent intent = new Intent(MainActivity.this, Activity2.class);
                 intent.putExtra("name", input.getText().toString());
                 startActivity(intent);
+
+                // Отправляем подсказку
                 Toast.makeText(MainActivity.this, "Вы перешли во второе активити",
                         Toast.LENGTH_LONG).show();
 
+                // работа с уведомлением
                 notificationManager = (NotificationManager) getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
                 Intent intent1 = new Intent(getApplicationContext(), MainActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK); // флаги для работы с уведомлением
                 PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(), 0, intent1, PendingIntent.FLAG_UPDATE_CURRENT); // отложенный интент
+
                 // конструируем уведомление
                 NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(getApplicationContext(), CHANNEL_ID)
                         .setAutoCancel(false)

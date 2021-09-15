@@ -33,7 +33,15 @@ public class Activity2 extends AppCompatActivity {
                 .setPositiveButton("Да", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int whichButton) {
-                        dialogInterface.cancel(); // закрываем диалоговое окно
+                        //dialogInterface.cancel(); // закрываем диалоговое окно
+
+                        // Переход в третье активити с получением информации
+                        Intent intent = new Intent(Activity2.this, Activity3.class);
+                        startActivityForResult(intent, 1);
+
+                        // Отправляем подсказку
+                        Toast.makeText(Activity2.this, "Вы перешли в третье активити",
+                                Toast.LENGTH_LONG).show();
                     }
                 })
                 .setNegativeButton("Нет", new DialogInterface.OnClickListener() {
@@ -42,6 +50,7 @@ public class Activity2 extends AppCompatActivity {
                         // Возвращаемся в первое активити
                         Intent intent = new Intent(Activity2.this, MainActivity.class);
                         startActivity(intent);
+
                         // Отправляем подсказку
                         Toast.makeText(Activity2.this, "Вы вернулись в первое активити",
                                 Toast.LENGTH_LONG).show();
@@ -63,4 +72,15 @@ public class Activity2 extends AppCompatActivity {
             }
         });
     }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        String Surname = data.getStringExtra("Surname");
+
+        // Отправляем подсказку
+        Toast.makeText(Activity2.this, "Ваша фамилия - "+ Surname,
+                Toast.LENGTH_LONG).show();
+    }
+
 }
